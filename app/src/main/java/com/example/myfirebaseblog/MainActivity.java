@@ -1,5 +1,6 @@
 package com.example.myfirebaseblog;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,11 +10,15 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.squareup.picasso.Picasso;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -75,5 +80,36 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public static class BlogViewHolder extends RecyclerView.ViewHolder {
+
+        View mView;
+
+        public BlogViewHolder(View itemView) {
+            super(itemView);
+            mView = itemView;
+        }
+
+        public void setTitle(String title) {
+            TextView post_title = mView.findViewById(R.id.text_post_title);
+            post_title.setText(title);
+        }
+
+        public void setDesc(String desc) {
+            TextView post_desc = mView.findViewById(R.id.edittext_post_description);
+            post_desc.setText(desc);
+        }
+
+        public void setImageUrl(Context context, String imageUrl) {
+            ImageView post_image = mView.findViewById(R.id.image_post);
+            Picasso.with(context).load(imageUrl).into(post_image);
+        }
+
+        public void setUserName(String userName) {
+            TextView postUserName = mView.findViewById(R.id.text_post_user);
+            postUserName.setText(userName);
+        }
+
     }
 }
