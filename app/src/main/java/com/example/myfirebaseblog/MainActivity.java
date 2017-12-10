@@ -77,6 +77,13 @@ public class MainActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
+        } else if(id == R.id.action_add) {
+            startActivity(new Intent(MainActivity.this, PostActivity.class));
+        } else if (id == R.id.action_logout) {
+            mAuth.signOut();
+            Intent logoutIntent = new Intent(MainActivity.this, RegisterActivity.class);
+            logoutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(logoutIntent);
         }
 
         return super.onOptionsItemSelected(item);
