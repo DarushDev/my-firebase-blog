@@ -49,7 +49,7 @@ public class PostActivity extends AppCompatActivity {
 
         // initialize objects
         mBtnPost = findViewById(R.id.button_post_post);
-        mEtDescription = findViewById(R.id.edittext_post_description);
+        mEtDescription = findViewById(R.id.et_post_description);
         mEtTitle = findViewById(R.id.edittext_post_title);
         mImageBtnAddImage = findViewById(R.id.imagebutton_post_addImage);
 
@@ -73,13 +73,13 @@ public class PostActivity extends AppCompatActivity {
         mBtnPost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(PostActivity.this, "Posting...", Toast.LENGTH_LONG).show();
+                Toast.makeText(PostActivity.this, "Posting...", Toast.LENGTH_SHORT).show();
 
                 final String postTitle = mEtTitle.getText().toString().trim();
                 final String postDesc = mEtDescription.getText().toString().trim();
 
                 // check for empty fields
-                if(!TextUtils.isEmpty(postDesc) && !TextUtils.isEmpty(postTitle)){
+                if(!TextUtils.isEmpty(postDesc) && !TextUtils.isEmpty(postTitle) && mUri != null){
 
                     // First upload the image
                     StorageReference filePath = mFirebaseStorage.child("post_images").child(mUri.getLastPathSegment());
@@ -101,7 +101,7 @@ public class PostActivity extends AppCompatActivity {
                                     newPost.child("desc").setValue(postDesc);
                                     newPost.child("imageUrl").setValue(downloadUrl.toString());
                                     newPost.child("uid").setValue(mCurrentUser.getUid());
-                                    newPost.child("username").setValue(dataSnapshot.child("name").getValue())
+                                    newPost.child("username").setValue(dataSnapshot.child("username").getValue())
                                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                 @Override
                                                 public void onComplete(@NonNull Task<Void> task) {
@@ -123,6 +123,8 @@ public class PostActivity extends AppCompatActivity {
                         }
                     });
 
+                } else {
+                    Toast.makeText(PostActivity.this, "Please update all the fields!!!", Toast.LENGTH_SHORT).show();
                 }
 
             }

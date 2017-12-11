@@ -72,7 +72,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                             Toast.makeText(RegisterActivity.this, "Registration Successful", Toast.LENGTH_SHORT).show();
 
-                            Intent regIntent = new Intent(RegisterActivity.this, ProfileActivity.class);
+                            Intent regIntent = new Intent(RegisterActivity.this, MainActivity.class);
                             regIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(regIntent);
                         }

@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,6 +20,7 @@ import android.widget.TextView;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
@@ -66,10 +68,9 @@ public class MainActivity extends AppCompatActivity {
 
         mAuth.addAuthStateListener(mAuthListener);
 
-        Query blogsQuery = mDatabase.orderByKey();
+        Query blogsQuery = mDatabase;
 
-        FirebaseRecyclerOptions options = new FirebaseRecyclerOptions
-                .Builder()
+        FirebaseRecyclerOptions<Blog> options = new FirebaseRecyclerOptions.Builder<Blog>()
                 .setQuery(blogsQuery, Blog.class)
                 .build();
 
@@ -99,9 +100,18 @@ public class MainActivity extends AppCompatActivity {
                 });
             }
 
-        };
+            @Override
+            public void onDataChanged() {
+                super.onDataChanged();
+            }
 
+            @Override
+            public void onError(DatabaseError error) {
+                super.onError(error);
+            }
+        };
         mRecyclerView.setAdapter(firebaseRecyclerAdapter);
+        firebaseRecyclerAdapter.startListening();
     }
 
     @Override
@@ -143,22 +153,22 @@ public class MainActivity extends AppCompatActivity {
         }
 
         public void setTitle(String title) {
-            TextView post_title = mView.findViewById(R.id.text_post_title);
+            TextView post_title = mView.findViewById(R.id.tv_post_title);
             post_title.setText(title);
         }
 
         public void setDesc(String desc) {
-            TextView post_desc = mView.findViewById(R.id.edittext_post_description);
+            TextView post_desc = mView.findViewById(R.id.tv_post_desc);
             post_desc.setText(desc);
         }
 
         public void setImageUrl(Context context, String imageUrl) {
-            ImageView post_image = mView.findViewById(R.id.image_post);
+            ImageView post_image = mView.findViewById(R.id.iv_post_image);
             Picasso.with(context).load(imageUrl).into(post_image);
         }
 
         public void setUserName(String userName) {
-            TextView postUserName = mView.findViewById(R.id.text_post_user);
+            TextView postUserName = mView.findViewById(R.id.tv_post_username);
             postUserName.setText(userName);
         }
 
