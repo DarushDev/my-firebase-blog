@@ -83,6 +83,7 @@ public class PostActivity extends AppCompatActivity {
 
                     // First upload the image
                     StorageReference filePath = mFirebaseStorage.child("post_images").child(mUri.getLastPathSegment());
+
                     filePath.putFile(mUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -105,8 +106,7 @@ public class PostActivity extends AppCompatActivity {
                                                 @Override
                                                 public void onComplete(@NonNull Task<Void> task) {
                                                     if (task.isSuccessful()) {
-                                                        Intent intent = new Intent(PostActivity.this, MainActivity.class);
-                                                        startActivity(intent);
+                                                        finish();
                                                     }
                                                 }
                                             });
